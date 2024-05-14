@@ -16,7 +16,7 @@ const config = {
   /**
    * The layer within the vector tileset to use for querying
    */
-  sourceLayer: 'Africa-20tjl0',
+  sourceLayer: 'markerUrbAglo_AQdata-b6k3np',
   /**
    * This sets the title in the sidebar and the <title> tag of the app
    */
