@@ -9,14 +9,14 @@ const config = {
    * Replace this with your Mapbox Access Token (**Do this first!**)
    */
   accessToken:
-        'pk.eyJ1IjoibWFuZ29zdHJlZXQ2MTIiLCJhIjoiY2x3NjJiMThmMWo1bDJqbGNramV1Nm9haSJ9.C0kMDgZABO59sbneYIPeYA'  /**
+        'pk.eyJ1IjoibWFuZ29zdHJlZXQ2MTIiLCJhIjoiY2x3NjIzdTZnMWwzOTJpbXVnYTBmdWtsZiJ9.FTXPcQOVy3hRuir24gkunQ'  /**
    * Replace with the url of your map style
    */
-  mapStyle: 'mapbox://styles/mangostreet612/clw62g02x02on01qz10qs3ghu',
+  mapStyle: 'https://api.mapbox.com/styles/v1/mapbox-community/ckglghzgg0d6y19pe11eo9zlw.html',
   /**
    * The layer within the vector tileset to use for querying
    */
-  sourceLayer: 'markerUrbAglo_AQdata-b6k3np',
+  sourceLayer: 'UrbAglo_AQdata-b6k3np',
   /**
    * This sets the title in the sidebar and the <title> tag of the app
    */
@@ -358,3 +358,4 @@ function buildLegend() {
     });
   }
 }
+
