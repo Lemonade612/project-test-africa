@@ -2,7 +2,7 @@
  * @Author: yifei.wang.x22 yifei.wang.x22@polytechnique.edu
  * @Date: 2024-05-15 12:18:50
  * @LastEditors: yifei.wang.x22 yifei.wang.x22@polytechnique.edu
- * @LastEditTime: 2024-05-19 01:49:54
+ * @LastEditTime: 2024-05-19 12:14:45
  * @FilePath: /impact-tools-1/charts/chart.html
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -57,6 +57,9 @@
         id="map"
         class="bg-darken10 viewport-half viewport-full-ml absolute top left right bottom"
       >
+     
+    
+      <pre id="features"></pre>
         <div
           id="legend"
           class="my36 mx12 px12 py12 absolute z1 right bottom bg-white round-ml shadow-darken10 none"
@@ -250,8 +253,10 @@
                 'minzoom': 0, // 最小缩放级别
                   'maxzoom': 10, // 最大缩放级别
                 'paint': {
-                  'circle-color': '#007cbf',
-                  'circle-radius': 5
+                  'circle-radius': 4,
+                'circle-stroke-width': 2,
+                'circle-color': 'red',
+                'circle-stroke-color': 'white'
                 }
               });
             map.addLayer({
@@ -261,8 +266,10 @@
               'minzoom': 0, // 最小缩放级别
                   'maxzoom': 10, // 最大缩放级别
               'paint': {
-                'circle-color': '#007cbf',
-                'circle-radius': 5
+                'circle-radius': 4,
+                'circle-stroke-width': 2,
+                'circle-color': 'red',
+                'circle-stroke-color': 'white'
               }
             });
             map.addLayer({
@@ -272,8 +279,10 @@
                 'minzoom': 0, // 最小缩放级别
                 'maxzoom': 10, // 最大缩放级别
                 'paint': {
-                  'circle-color': '#007cbf',
-                  'circle-radius': 5}
+                  'circle-radius': 4,
+                  'circle-stroke-width': 2,
+                  'circle-color': 'red',
+                  'circle-stroke-color': 'white'}
             });
             map.addLayer({
                 'id': '13-20-layer',
@@ -281,8 +290,10 @@
                 'source': '13-20',
                 
                 'paint': {
-                  'circle-color': '#007cbf',
-                  'circle-radius': 5},
+                  'circle-radius': 4,
+                'circle-stroke-width': 2,
+                'circle-color': 'red',
+                'circle-stroke-color': 'white'},
                   'minzoom': 0, // 最小缩放级别
                   'maxzoom': 10 // 最大缩放级别
             });
@@ -400,6 +411,34 @@
           updateChartFromClick(filteredFeatures1,filteredFeatures2,filteredFeatures3,filteredFeatures4);
         }
       }
+
+      map.on('mousemove', (e) => {
+        const features = map.queryRenderedFeatures(e.point);
+
+        // Limit the number of properties we're displaying for
+        // legibility and performance
+        const displayProperties = [
+            
+            'properties[Agglomeration_Name]',
+            'properties[ISO3]'
+           
+        ];
+
+        const displayFeatures = features.map((feat) => {
+            const displayFeat = {};
+            displayProperties.forEach((prop) => {
+                displayFeat[prop] = feat[prop];
+            });
+            return displayFeat;
+        });
+
+        // Write object as string with an indent of two spaces.
+        document.getElementById('features').innerHTML = JSON.stringify(
+            displayFeatures,
+            null,
+            2
+        );
+    });
 
       map.on('dblclick', function(event) {
         // 双击事件处理程序
