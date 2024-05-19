@@ -2,7 +2,7 @@
  * @Author: yifei.wang.x22 yifei.wang.x22@polytechnique.edu
  * @Date: 2024-05-15 12:18:50
  * @LastEditors: yifei.wang.x22 yifei.wang.x22@polytechnique.edu
- * @LastEditTime: 2024-05-18 21:50:07
+ * @LastEditTime: 2024-05-19 01:49:54
  * @FilePath: /impact-tools-1/charts/chart.html
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -222,8 +222,25 @@
             });
             map.addSource('merge1',{
               type:'geojson',
-              data:'https://raw.githubusercontent.com/Lemonade612/project-test-africa/main/Merged1.geojson',
+              data:'https://raw.githubusercontent.com/Lemonade612/project-test-africa/main/merged2.geojson',
           });
+          map.addSource('merge2',{
+            type:'geojson',
+            data:'https://raw.githubusercontent.com/Lemonade612/project-test-africa/main/merged3.geojson',
+        });
+        map.addSource('merge3',{
+          type:'geojson',
+          data:'https://raw.githubusercontent.com/Lemonade612/project-test-africa/main/merged4.geojson',
+      });
+      map.addSource('merge4',{
+        type:'geojson',
+        data:'https://raw.githubusercontent.com/Lemonade612/project-test-africa/main/merged5.geojson',
+    });
+    map.addSource('merge5',{
+      type:'geojson',
+      data:'https://raw.githubusercontent.com/Lemonade612/project-test-africa/main/merged6.geojson',
+  });
+  
         
             // 添加一个图层来显示 GeoJSON 数据
             map.addLayer({
@@ -231,7 +248,7 @@
                 'type': 'circle',
                 'source': 'points',
                 'minzoom': 0, // 最小缩放级别
-                  'maxzoom': 0, // 最大缩放级别
+                  'maxzoom': 10, // 最大缩放级别
                 'paint': {
                   'circle-color': '#007cbf',
                   'circle-radius': 5
@@ -242,7 +259,7 @@
               'type': 'circle',
               'source': '98-05',
               'minzoom': 0, // 最小缩放级别
-                  'maxzoom': 0, // 最大缩放级别
+                  'maxzoom': 10, // 最大缩放级别
               'paint': {
                 'circle-color': '#007cbf',
                 'circle-radius': 5
@@ -253,7 +270,7 @@
                 'type': 'circle',
                 'source': '06-12',
                 'minzoom': 0, // 最小缩放级别
-                'maxzoom': 0, // 最大缩放级别
+                'maxzoom': 10, // 最大缩放级别
                 'paint': {
                   'circle-color': '#007cbf',
                   'circle-radius': 5}
@@ -267,7 +284,7 @@
                   'circle-color': '#007cbf',
                   'circle-radius': 5},
                   'minzoom': 0, // 最小缩放级别
-                  'maxzoom': 0 // 最大缩放级别
+                  'maxzoom': 10 // 最大缩放级别
             });
             map.addLayer({
               'id': 'merge1-layer',
@@ -275,11 +292,55 @@
               'source': 'merge1',
               
               'paint': {
-                'fill-color': '#007cbf',
-                'fill-opacity': 1},
-                'minzoom': 0, // 最小缩放级别
+                'fill-color': '#FF69B4',
+                'fill-opacity': 0.8},
+                'minzoom': 8, // 最小缩放级别
                 'maxzoom': 22 // 最大缩放级别
           });
+          map.addLayer({
+            'id': 'merge2-layer',
+            'type': 'fill',
+            'source': 'merge2',
+            
+            'paint': {
+              'fill-color': '#FF69B4',
+              'fill-opacity': 0.8},
+              'minzoom': 8, // 最小缩放级别
+              'maxzoom': 22 // 最大缩放级别
+        });
+        map.addLayer({
+          'id': 'merge3-layer',
+          'type': 'fill',
+          'source': 'merge3',
+          
+          'paint': {
+            'fill-color': '#FF69B4',
+            'fill-opacity': 0.8},
+            'minzoom': 8, // 最小缩放级别
+            'maxzoom': 22 // 最大缩放级别
+      });
+      map.addLayer({
+        'id': 'merge4-layer',
+        'type': 'fill',
+        'source': 'merge4',
+        
+        'paint': {
+          'fill-color': '#FF69B4',
+          'fill-opacity': 0.8},
+          'minzoom': 8, // 最小缩放级别
+          'maxzoom': 22 // 最大缩放级别
+    });
+    map.addLayer({
+      'id': 'merge5-layer',
+      'type': 'fill',
+      'source': 'merge5',
+      
+      'paint': {
+        'fill-color': '#FF69B4',
+        'fill-opacity': 0.8},
+        'minzoom': 8, // 最小缩放级别
+        'maxzoom': 22 // 最大缩放级别
+  });
             chart.load({
               columns: [['1998-2005', 33.12,	28.58,	35.11,	34.46,	34.77,	33.29,	35.47,	34.30],['2006-2012',33.15,	37.02,	37.21,	34.40,	34.57,	34.24, 34.45],['2013-2020',33.05,	32.00,	37.55,	35.64,	34.99,	33.62,	32.97,	33.06]],
             
@@ -326,10 +387,10 @@
        
         // 计算新的边界框坐标
         const newBb = [
-            bb[0]+0.2,
-            bb[1]+0.2,
-           bb[2]-0.2,
-           bb[3]-0.2
+            bb[0]+0.5,
+            bb[1]+0.5,
+           bb[2]-0.5,
+           bb[3]-0.5
         ];
            
         map.fitBounds(newBb);
