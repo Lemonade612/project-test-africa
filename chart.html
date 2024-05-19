@@ -2,7 +2,7 @@
  * @Author: yifei.wang.x22 yifei.wang.x22@polytechnique.edu
  * @Date: 2024-05-15 12:18:50
  * @LastEditors: yifei.wang.x22 yifei.wang.x22@polytechnique.edu
- * @LastEditTime: 2024-05-19 14:48:54
+ * @LastEditTime: 2024-05-19 16:50:12
  * @FilePath: /impact-tools-1/charts/chart.html
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -207,56 +207,108 @@
 
         map.on('load', function() {
             // 添加 GeoJSON 数据源
+          
             map.addSource('98-05', {
-              'type': 'geojson',
+              type: 'geojson',
               'data':  'https://raw.githubusercontent.com/Lemonade612/project-test-africa/main/pollution-98-05.geojson'
             });
-            map.addSource('06-12', {
-                'type': 'geojson',
-                'data':  'https://raw.githubusercontent.com/Lemonade612/project-test-africa/main/pollution-06-12.geojson'
+              map.addSource('06-12', {
+                type: 'geojson',
+                data:  'https://raw.githubusercontent.com/Lemonade612/project-test-africa/main/pollution-06-12.geojson'
               });
               map.addSource('13-20', {
-                'type': 'geojson',
-                'data':  'https://raw.githubusercontent.com/Lemonade612/project-test-africa/main/pollution-13-20.geojson'
+                type: 'geojson',
+                data:  'https://raw.githubusercontent.com/Lemonade612/project-test-africa/main/pollution-13-20.geojson'
               });
+           
             map.addSource('points',{
-                type:'geojson',
-                data:'https://raw.githubusercontent.com/Lemonade612/project-test-africa/main/Point-layer.geojson',
-            });
+              type:'geojson',
+              'data':'https://raw.githubusercontent.com/Lemonade612/project-test-africa/main/Point-layer.geojson'
+          });
+          map.addSource('cluster',{
+            type:'geojson',
+            'data':'https://raw.githubusercontent.com/Lemonade612/project-test-africa/main/Point-layer.geojson',
+            cluster:true,
+            clusterMaxZoom: 14, // Max zoom to cluster points on
+            clusterRadius: 50 
+
+        });
             map.addSource('merge1',{
               type:'geojson',
-              data:'https://raw.githubusercontent.com/Lemonade612/project-test-africa/main/merge1.geojson',
+              data:'https://raw.githubusercontent.com/Lemonade612/project-test-africa/main/merge1.geojson'
           });
           map.addSource('merge2',{
             type:'geojson',
-            data:'https://raw.githubusercontent.com/Lemonade612/project-test-africa/main/merged2.geojson',
+            data:'https://raw.githubusercontent.com/Lemonade612/project-test-africa/main/merged2.geojson'
         });
         map.addSource('merge3',{
           type:'geojson',
-          data:'https://raw.githubusercontent.com/Lemonade612/project-test-africa/main/merge3.geojson',
-      });
+          data:'https://raw.githubusercontent.com/Lemonade612/project-test-africa/main/merge3.geojson'
+          });
       
-  
-        
-            // 添加一个图层来显示 GeoJSON 数据
+         
             map.addLayer({
+                'id': 'cluster-layer',
+                'type': 'circle',
+                'source': 'cluster',
+                filter: ['has', 'point_count'],
+ 
+                paint: {
+                    // Use step expressions (https://docs.mapbox.com/style-spec/reference/expressions/#step)
+                    // with three steps to implement three types of circles:
+                    //   * Blue, 20px circles when point count is less than 100
+                    //   * Yellow, 30px circles when point count is between 100 and 750
+                    //   * Pink, 40px circles when point count is greater than or equal to 750
+                    'circle-color': [
+                        'step',
+                        ['get', 'point_count'],
+                        '#51bbd6',
+                        100,
+                        '#f1f075',
+                        750,
+                        '#f28cb1'
+                    ],
+                    'circle-radius': [
+                        'step',
+                        ['get', 'point_count'],
+                        20,
+                        100,
+                        30,
+                        750,
+                        40
+                    ]
+    
+                }
+              });
+              map.addLayer({
+                id: 'cluster-count',
+                type: 'symbol',
+                source: 'cluster',
+                filter: ['has', 'point_count'],
+                layout: {
+                    'text-field': ['get', 'point_count_abbreviated'],
+                    'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+                    'text-size': 12
+                }
+            });
+              map.addLayer({
                 'id': 'points-layer',
                 'type': 'circle',
                 'source': 'points',
-                'minzoom': 0, // 最小缩放级别
-                  'maxzoom': 10, // 最大缩放级别
+                'minzoom': 5, // 最小缩放级别
+                    'maxzoom': 10, // 最大缩放级别
                 'paint': {
                   'circle-radius': 4,
-                'circle-stroke-width': 2,
-                'circle-color': 'red',
-                'circle-stroke-color': 'white'
+                  'circle-stroke-width': 2,
+                  'circle-color': 'red',
+                  'circle-stroke-color': 'white'
                 }
               });
             map.addLayer({
               'id': '98-05-layer',
               'type': 'circle',
               'source': '98-05',
-              'minzoom': 0, // 最小缩放级别
+              'minzoom': 5, // 最小缩放级别
                   'maxzoom': 10, // 最大缩放级别
               'paint': {
                 'circle-radius': 4,
@@ -269,7 +321,7 @@
                 'id': '06-12-layer',
                 'type': 'circle',
                 'source': '06-12',
-                'minzoom': 0, // 最小缩放级别
+                'minzoom': 5, // 最小缩放级别
                 'maxzoom': 10, // 最大缩放级别
                 'paint': {
                   'circle-radius': 4,
@@ -287,7 +339,7 @@
                 'circle-stroke-width': 2,
                 'circle-color': 'red',
                 'circle-stroke-color': 'white'},
-                  'minzoom': 0, // 最小缩放级别
+                  'minzoom': 5, // 最小缩放级别
                   'maxzoom': 10 // 最大缩放级别
             });
             map.addLayer({
@@ -327,16 +379,13 @@
               columns: [['1998-2005', 33.12,	28.58,	35.11,	34.46,	34.77,	33.29,	35.47,	34.30],['2006-2012',33.15,	37.02,	37.21,	34.40,	34.57,	34.24, 34.45],['2013-2020',33.05,	32.00,	37.55,	35.64,	34.99,	33.62,	32.97,	33.06]],
             
             });
-          
-          
-        });
-  
-      
-           
 
+    });
+          
+      
     
 
-    map.on('click', onMapClick);
+    map.on('click', onMapClick)
    
       document.getElementById('resetButton').onclick = () => {
         if (summaryData1) {
@@ -350,23 +399,43 @@
       const zoomToFeature='true'
       
       function onMapClick(e) {
+        var currentZoom = map.getZoom();
+        console.log(currentZoom);
+        if (currentZoom < 5) {
+          const features = map.queryRenderedFeatures(e.point, {
+            layers: ['cluster-layer']
+        });
+        console.log(features);
+        const clusterId = features[0].properties.cluster_id;
+        const coordinates=features[0].geometry.coordinates;
+        console.log(coordinates);              
+        console.log(clusterId);
+        map.getSource('cluster').getClusterExpansionZoom(
+            clusterId,
+            (err, zoom) => {
+               
+                map.easeTo({
+                    center: coordinates,
+                    zoom:currentZoom+1    
+                });
+               
+            }
+        );
+         
+      } else {
         const clickedFeature = map.queryRenderedFeatures(e.point);
         const filteredFeatures1 = clickedFeature.filter(item => item.layer && item.layer['id'] === '98-05-layer')[0];
         const filteredFeatures2 = clickedFeature.filter(item => item.layer && item.layer['id'] === '06-12-layer')[0];
         const filteredFeatures3 = clickedFeature.filter(item => item.layer && item.layer['id'] === '13-20-layer')[0];
         const filteredFeatures4 = clickedFeature.filter(item => item.layer && item.layer['id'] === 'points-layer')[0];
 
-
-
-    //||item.layer && item.layer['id'] === '06-12-layer')[0];//||item.layer && item.layer['id'] === '13-20-layer')[0];
+        //||item.layer && item.layer['id'] === '06-12-layer')[0];//||item.layer && item.layer['id'] === '13-20-layer')[0];
 
         if (filteredFeatures1) {
           if (zoomToFeature) {
             const bb = turf.bbox(filteredFeatures1.geometry);
             console.log(bb);
-         
 
-       
         // 计算新的边界框坐标
         const newBb = [
             bb[0]+0.5,
@@ -374,7 +443,6 @@
            bb[2]-0.5,
            bb[3]-0.5
         ];
-           
         map.fitBounds(newBb);
             map.fitBounds(newBb);
           }
@@ -382,6 +450,7 @@
           updateChartFromClick(filteredFeatures1,filteredFeatures2,filteredFeatures3,filteredFeatures4);
         }
       }
+    }
 
       map.on('mousemove', (e) => {
         const features = map.queryRenderedFeatures(e.point);
